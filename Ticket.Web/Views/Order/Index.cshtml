@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Ticket.Domain.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Order</h1>
+
+<div class="container border rounded shadow">
+    <div class="row font-weight-bold text-center bg-dark text-white">
+        <div class="col p-2 border-white rounded d-flex flex-row justify-content-center align-items-center">
+            Order
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="row text-center border-bottom">
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </a>
+            </div>
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Completed)
+            </div>
+            <div  class="col-2 p-2 d-flex justify-content-center align-items-center">
+                <a asp-action="Invoice" asp-route-id="@item.Id" class="btn btn-primary font-weight-bold">
+                    Print
+                </a>
+            </div>
+        </div>
+    }
+</div>

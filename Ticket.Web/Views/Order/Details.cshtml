@@ -1,0 +1,76 @@
+﻿@model Ticket.Domain.DTO.OrderDto
+@using Ticket.Domain.Enum
+@{
+    ViewData["Title"] = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Orders</h1>
+
+<div class="container border rounded shadow">
+    <div class="row font-weight-bold text-center bg-dark text-white">
+        <div class="col p-2 border-white rounded">
+            Title
+        </div>
+        <div class="col border-left p-2 border-white rounded">
+            Start
+        </div>
+        <div class="col border-left p-2 border-white rounded">
+            Genre
+        </div>
+        <div class="col border-left p-2 border-white rounded">
+            Price
+        </div>
+        <div class="col-1 border-left p-2 border-white rounded">
+            Seats
+        </div>
+        <div class="col-1 border-left p-2 border-white rounded">
+            Quantity
+        </div>
+        <div class="col-1 border-left p-2 border-white rounded">
+            3D
+        </div>
+    </div>
+    @foreach (var item in Model.Tickets)
+    {
+        <div class="row text-center border-bottom">
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                <a asp-controller="Ticket" asp-action="Details" asp-route-id="@item.Ticket.Id">
+                    @Html.DisplayFor(modelItem => item.Ticket.Title)
+                </a>
+            </div>
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.ValidUntil)
+            </div>
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                @(char.ToUpper(item.Ticket.Genre.ToString()[0]) + item.Ticket.Genre.ToString().ToLower().Substring(1))
+            </div>
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.Price) MKD
+            </div>
+            <div class="col-1 p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.Seats)
+            </div>
+            <div class="col-1 p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </div>
+            <div class="col-1 p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.In3D)
+            </div>
+        </div>
+    }
+    <div class="row font-weight-bold text-center bg-dark text-white">
+        <div class="col d-flex justify-content-start align-items-center p-2">
+            Total Price:
+        </div>
+        <div class="col d-flex justify-content-end align-items-center p-2">
+            @Html.DisplayFor(modelItem => Model.TotalPrice) MKD
+        </div>
+        <div class="col-2 border-left p-2 border-white rounded">
+            <a asp-action="Invoice" asp-route-id="@Model.Id" class="btn btn-primary font-weight-bold">
+                Print
+            </a>
+        </div>
+    </div>
+
+</div>

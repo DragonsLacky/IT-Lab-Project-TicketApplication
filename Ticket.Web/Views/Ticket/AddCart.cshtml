@@ -1,0 +1,35 @@
+﻿@model Ticket.Domain.DTO.AddToCartDto
+
+@{
+    ViewData["Title"] = "Add to cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Add to cart</h1>
+<h4>Ticket</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddCart">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TicketId" />
+            <div class="form-group">
+                <label asp-for="Ticket.Title" class="control-label"></label>
+                <input asp-for="Ticket.Title" disabled class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Ticket.Seats" class="control-label"></label>
+                <input asp-for="Ticket.Seats" disabled class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

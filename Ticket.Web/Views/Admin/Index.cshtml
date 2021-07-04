@@ -1,0 +1,39 @@
+﻿@using Ticket.Domain.Enum
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form asp-action="ImportUsers" asp-controller="Account" method="post">
+                <div class="form-group">
+                    <input type="submit" value="Import Users from Excel" class="btn btn-primary" />
+                </div>
+            </form>
+            <form asp-action="ExportTickets" method="post">
+                <div class="input-group-append">
+                    <div class="form-group">
+                        <input type="submit" value="Export Tickets to Excel" class="btn btn-primary" />
+                    </div>
+                    <div class="form-group input-group-append">
+                        <label for="genre" class="control-label"></label>
+                        <select name="genre" class="form-control">
+                            <option value="10">All</option>
+                            @for (int i = 0; i < Genre.GetValues<Genre>().Length; i++)
+                            {
+                                <option value="@i">
+                                    @(char.ToUpper(Genre.GetValues<Genre>()[i].ToString()[0]) + Genre.GetValues<Genre>()[i].ToString().ToLower().Substring(1))
+                                </option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+                
+            </form>
+            <a class="btn btn-primary" asp-action="MakeAdmin" asp-controller="Account">Role Control</a>
+        </div>
+    </div>
+</div>

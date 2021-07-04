@@ -1,0 +1,101 @@
+﻿@model Ticket.Domain.DTO.CartDto
+@using Microsoft.Extensions.Options
+@inject IOptions<Ticket.Domain.StripeSettings> stripe
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Shopping Cart</h1>
+
+<div class="container border rounded shadow">
+    <div class="row font-weight-bold text-center bg-dark text-white">
+        <div class="col p-2 border-white rounded">
+            Title
+        </div>
+        <div class="col border-left p-2 border-white rounded">
+            Start
+        </div>
+        <div class="col border-left p-2 border-white rounded">
+            Genre
+        </div>
+        <div class="col border-left p-2 border-white rounded">
+            Price
+        </div>
+        <div class="col-1 border-left p-2 border-white rounded">
+            Seats
+        </div>
+        <div class="col-1 border-left p-2 border-white rounded">
+            Quantity
+        </div>
+        <div class="col-1 border-left p-2 border-white rounded">
+            3D
+        </div>
+        <div class="col-1 border-left p-2 border-white rounded">
+
+        </div>
+    </div>
+    @foreach (var item in Model.Tickets)
+    {
+        <div class="row text-center border-bottom">
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                <a asp-controller="Ticket" asp-action="Details" asp-route-id="@item.Ticket.Id">
+                    @Html.DisplayFor(modelItem => item.Ticket.Title)
+                </a>
+            </div>
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.ValidUntil)
+            </div>
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                @(char.ToUpper(item.Ticket.Genre.ToString()[0]) + item.Ticket.Genre.ToString().ToLower().Substring(1))
+            </div>
+            <div class="col p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.Price) MKD
+            </div>
+            <div class="col-1 p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.Seats)
+            </div>
+            <div class="col-1 p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </div>
+            <div class="col-1 p-2 d-flex justify-content-center align-items-center">
+                @Html.DisplayFor(modelItem => item.Ticket.In3D)
+            </div>
+            <div class="col-1 p-2 d-flex justify-content-center align-items-center">
+                <a asp-controller="Cart" asp-action="RemoveCart" asp-route-id="@item.Ticket.Id"  class="btn btn-danger text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    }
+    <div class="row font-weight-bold text-center bg-dark text-white">
+        <div class="col d-flex justify-content-start align-items-center p-2">
+            Total Price:
+        </div>
+        <div class="col d-flex justify-content-end align-items-center p-2">
+            @Html.DisplayFor(modelItem => Model.TotalPrice) MKD
+        </div>
+        <div class="col-2 border-left p-2 border-white rounded">            
+            <form asp-action="Pay" method="post">
+                <article>
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            data-key="@stripe.Value.Publishable"
+                            data-amount="@(Model.TotalPrice*100)"
+                            data-name="Ticket Application"
+                            data-description="Tickets Payment"
+                            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                            data-locale="auto"
+                            data-zip-code="true"
+                            data-label="Checkout">
+                    </script>
+                </article>
+            </form>
+        </div>
+    </div>
+
+</div>
+
